@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KraftKitchen — World-Class Modular Kitchens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   COHERE DESIGN SYSTEM — KRAFTKITCHEN IMPLEMENTATION
+═══════════════════════════════════════════════════════════ */
+:root {
+  --black:      #000000;
+  --ink:        #17171c;
+  --ink-soft:   #2d2d35;
+  --green:      #003c33;
+  --green-mid:  #005247;
+  --navy:       #071829;
+  --blue:       #1863dc;
+  --coral:      #ff7759;
+  --coral-soft: #ffad9b;
+  --coral-bg:   rgba(255,119,89,.08);
+  --white:      #ffffff;
+  --stone:      #eeece7;
+  --stone-dark: #e4e1db;
+  --wash-green: #edfce9;
+  --wash-blue:  #f1f5ff;
+  --card-line:  #f2f2f2;
+  --body:       #212121;
+  --muted:      #93939f;
+  --slate:      #75758a;
+  --hairline:   #d9d9dd;
+  --border:     #e5e7eb;
+  --r-xs:4px; --r-sm:8px; --r-md:16px; --r-lg:22px; --r-xl:30px; --r-pill:9999px;
+  --fd: 'Syne','Space Grotesk',ui-sans-serif,system-ui;
+  --fb: 'Plus Jakarta Sans','Inter',ui-sans-serif,system-ui;
+  --fm: 'Space Mono','Courier New',monospace;
+  --nav-h: 64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--white);color:var(--body);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--hairline);border-radius:2px}
+
+/* ── ANNOUNCE ─────────────────────────────────────────────────── */
+#announce{
+  background:var(--black);color:white;font-family:var(--fb);
+  font-size:13px;height:36px;display:flex;align-items:center;justify-content:center;
+  gap:6px;position:relative;z-index:1000;
+}
+#announce a{text-decoration:underline;text-underline-offset:2px;color:white;font-weight:500}
+#announce-x{position:absolute;right:16px;color:rgba(255,255,255,.5);font-size:18px;line-height:1;padding:6px;transition:color .15s}
+#announce-x:hover{color:white}
+
+/* ── NAV ──────────────────────────────────────────────────────── */
+#nav{
+  position:sticky;top:0;z-index:900;height:var(--nav-h);
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:0 48px;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:box-shadow .25s;
+}
+#nav.scrolled{box-shadow:0 1px 16px rgba(0,0,0,.07)}
+.n-logo{display:flex;align-items:center;gap:0}
+.n-mark{
+  font-family:var(--fd);font-size:19px;font-weight:800;letter-spacing:-0.05em;color:var(--ink);
+}
+.n-mark sup{font-size:9px;font-weight:700;color:var(--coral);letter-spacing:0;vertical-align:super;margin-left:1px}
+.n-links{display:flex;align-items:center;gap:36px}
+.n-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s;white-space:nowrap}
+.n-links a:hover{color:var(--ink)}
+.n-right{display:flex;align-items:center;justify-content:flex-end;gap:14px}
+.n-text-link{font-size:14px;font-weight:500;color:var(--body);text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.n-text-link:hover{color:var(--blue)}
+.n-pill{
+  height:38px;padding:0 20px;background:var(--ink);color:white;
+  border-radius:var(--r-pill);font-size:13px;font-weight:600;letter-spacing:.01em;
+  display:inline-flex;align-items:center;gap:7px;transition:background .2s,transform .15s;
+}
+.n-pill:hover{background:var(--ink-soft);transform:translateY(-1px)}
+.n-burger{display:none;flex-direction:column;gap:4px;padding:6px;margin-right:-6px}
+.n-burger span{width:22px;height:1.5px;background:var(--ink);border-radius:1px;transition:all .25s}
+.n-burger.open span:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+.n-burger.open span:nth-child(2){opacity:0}
+.n-burger.open span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+#mobile-menu{
+  display:none;position:fixed;top:var(--nav-h);left:0;right:0;z-index:899;
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:20px 32px 28px;flex-direction:column;gap:2px;
+  box-shadow:0 8px 32px rgba(0,0,0,.1);
+}
+#mobile-menu.open{display:flex}
+#mobile-menu a{
+  font-size:17px;font-weight:500;color:var(--body);
+  padding:12px 0;border-bottom:1px solid var(--border);
+}
+#mobile-menu a:last-child{border-bottom:none;color:var(--green);font-weight:700;margin-top:4px}
+
+/* ── HERO ─────────────────────────────────────────────────────── */
+.hero{background:var(--white);padding:88px 80px 72px;text-align:center;overflow:hidden}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--fm);font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:28px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:32px;height:1px;background:var(--hairline)}
+.hero-h1{
+  font-family:var(--fd);font-size:clamp(52px,7.5vw,96px);
+  font-weight:800;line-height:1.0;letter-spacing:-0.035em;color:var(--ink);
+  max-width:860px;margin:0 auto 24px;
+}
+.hero-h1 .accent{color:var(--green)}
+.hero-h1 .line-break{display:block}
+.hero-sub{
+  font-size:18px;font-weight:400;color:var(--slate);max-width:500px;
+  margin:0 auto 40px;line-height:1.7;
+}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:72px}
+.btn-dark{
+  height:48px;padding:0 28px;background:var(--ink);color:white;
+  border-radius:var(--r-pill);font-size:14px;font-weight:600;letter-spacing:.01em;
+  display:inline-flex;align-items:center;gap:8px;transition:background .2s,transform .15s,box-shadow .2s;
+}
+.btn-dark:hover{background:var(--ink-soft);transform:translateY(-1px);box-shadow:0 8px 24px rgba(23,23,28,.2)}
+.btn-text{
+  font-size:14px;font-weight:500;color:var(--body);display:inline-flex;align-items:center;gap:6px;
+  text-decoration:underline;text-underline-offset:3px;transition:color .2s;
+}
+.btn-text:hover{color:var(--blue)}
+/* hero media */
+.hero-media{
+  width:100%;max-width:1080px;margin:0 auto;
+  display:grid;grid-template-columns:1.6fr 1fr;gap:14px;
+}
+.hero-img-main{
+  border-radius:var(--r-lg);overflow:hidden;height:440px;
+  border:1px solid var(--card-line);position:relative;
+}
+.hero-img-main img{height:100%;transition:transform .6s ease}
+.hero-img-main:hover img{transform:scale(1.03)}
+.hero-side{display:flex;flex-direction:column;gap:14px}
+.hero-img-sm{
+  flex:1;border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid var(--card-line);min-height:200px;position:relative;
+}
+.hero-img-sm img{transition:transform .6s ease}
+.hero-img-sm:hover img{transform:scale(1.04)}
+.hero-console{
+  background:var(--ink);border-radius:var(--r-lg);padding:18px 20px;
+  border:1px solid rgba(255,255,255,.06);flex-shrink:0;
+}
+.con-titlebar{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.con-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.con-filename{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.22);margin-left:6px;letter-spacing:.04em}
+.con-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.con-row:last-child{border-bottom:none;padding-bottom:0}
+.con-chip{font-family:var(--fm);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:var(--r-pill);border:1px solid;flex-shrink:0}
+.chip-g{color:#4ade80;border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.08)}
+.chip-c{color:var(--coral);border-color:rgba(255,119,89,.35);background:var(--coral-bg)}
+.chip-b{color:#60a5fa;border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.08)}
+.chip-y{color:#fbbf24;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.08)}
+.con-lbl{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.02em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.con-val{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.7);white-space:nowrap}
+
+/* ── TRUST STRIP ──────────────────────────────────────────────── */
+.trust-strip{padding:64px 80px;border-bottom:1px solid var(--border);text-align:center}
+.trust-lbl{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:40px}
+.trust-row{display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
+.trust-logo{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--fd);font-size:15px;font-weight:700;letter-spacing:-0.02em;
+  color:var(--hairline);transition:color .2s;cursor:default;
+}
+.trust-logo svg{width:18px;height:18px;fill:currentColor;opacity:.6}
+.trust-logo:hover{color:var(--stone-dark)}
+.trust-divider{width:1px;height:24px;background:var(--card-line);flex-shrink:0}
+
+/* ── STATS BAND ───────────────────────────────────────────────── */
+.stats-band{
+  background:var(--stone);padding:56px 80px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--border);
+}
+.stat-item{text-align:center;padding:0 24px;position:relative}
+.stat-item+.stat-item::before{content:'';position:absolute;left:0;top:10%;bottom:10%;width:1px;background:var(--border)}
+.stat-num{font-family:var(--fd);font-size:clamp(36px,4vw,52px);font-weight:800;letter-spacing:-0.04em;color:var(--ink);line-height:1}
+.stat-num sub{font-size:55%;vertical-align:baseline;color:var(--coral)}
+.stat-label{font-family:var(--fm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+/* ── SECTION PRIMITIVES ───────────────────────────────────────── */
+.sec{padding:96px 80px}
+.sec-mono{
+  font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.sec-mono::before{content:'';width:18px;height:1px;background:var(--hairline)}
+.sec-h{
+  font-family:var(--fd);font-size:clamp(36px,4.5vw,62px);font-weight:800;
+  line-height:1.0;letter-spacing:-0.035em;color:var(--ink);
+}
+.sec-h .em{color:var(--green)}
+.sec-p{font-size:17px;color:var(--slate);line-height:1.75;margin-top:14px;max-width:520px}
+.sec-hdr{margin-bottom:60px}
+/* dark variants */
+.on-dark .sec-mono{color:rgba(255,255,255,.35)}
+.on-dark .sec-mono::before{background:rgba(255,255,255,.15)}
+.on-dark .sec-h{color:white}
+.on-dark .sec-h .em{color:#7ee8a2}
+.on-dark .sec-p{color:rgba(255,255,255,.55)}
+
+/* ── CATEGORIES ───────────────────────────────────────────────── */
+#categories{border-bottom:1px solid var(--border)}
+.cat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;
+  gap:1px;background:var(--border);
+}
+.cat-card{
+  background:var(--white);display:flex;flex-direction:column;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:background .2s;
+}
+.cat-card:hover{background:var(--stone)}
+.cat-thumb{height:200px;overflow:hidden;position:relative;flex-shrink:0}
+.cat-thumb img{transition:transform .55s ease}
+.cat-card:hover .cat-thumb img{transform:scale(1.05)}
+/* category-specific image overlays for branding */
+.cat-thumb::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(23,23,28,.18) 100%);
+  pointer-events:none;
+}
+.cat-body{padding:22px 22px 16px;flex:1}
+.cat-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.c-chip{
+  font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 11px;border-radius:var(--r-pill);
+  border:1px solid var(--coral);color:var(--coral);background:transparent;
+  transition:background .2s,color .2s;
+}
+.cat-card:hover .c-chip{background:var(--coral);color:white}
+.cat-title{font-family:var(--fd);font-size:20px;font-weight:700;letter-spacing:-0.025em;color:var(--ink);margin-bottom:7px}
+.cat-desc{font-size:13.5px;color:var(--slate);line-height:1.65}
+.cat-foot{
+  padding:14px 22px;border-top:1px solid var(--card-line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cat-foot-count{font-family:var(--fm);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cat-foot-link{font-size:13px;color:var(--blue);text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.cat-foot-link:hover{color:var(--ink)}
+
+/* ── MATERIALS ────────────────────────────────────────────────── */
+#materials{background:var(--green);padding:96px 80px}
+.mat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.1);border-radius:var(--r-md);overflow:hidden;
+}
+.mat-card{background:rgba(0,0,0,.2);overflow:hidden;transition:background .25s}
+.mat-card:hover{background:rgba(0,0,0,.1)}
+.mat-img{height:150px;overflow:hidden;position:relative}
+.mat-img img{transition:transform .55s ease;filter:brightness(.8) saturate(.85)}
+.mat-card:hover .mat-img img{transform:scale(1.06);filter:brightness(.9) saturate(1)}
+.mat-body{padding:18px 20px 20px}
+.mat-badge{
+  display:inline-block;margin-bottom:9px;
+  font-family:var(--fm);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 10px;border-radius:var(--r-pill);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.55);
+}
+.mat-name{font-family:var(--fd);font-size:16px;font-weight:700;color:white;margin-bottom:5px;letter-spacing:-0.015em}
+.mat-desc{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65}
+
+/* ── PROCESS — RESEARCH TABLE ─────────────────────────────────── */
+#process{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.proc-table{border-top:1px solid var(--hairline)}
+.proc-row{
+  display:grid;grid-template-columns:72px 1fr 200px 140px;
+  gap:40px;align-items:start;padding:30px 0;border-bottom:1px solid var(--hairline);
+  position:relative;cursor:default;transition:background .2s;
+}
+.proc-row::after{
+  content:'';position:absolute;left:-80px;right:-80px;top:0;bottom:0;
+  background:var(--stone);opacity:0;transition:opacity .2s;z-index:-1;border-radius:0;
+}
+.proc-row:hover::after{opacity:1}
+.proc-num{
+  font-family:var(--fd);font-size:44px;font-weight:800;letter-spacing:-0.05em;
+  color:var(--hairline);line-height:1;padding-top:2px;
+}
+.proc-main{}
+.proc-title{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-0.025em;margin-bottom:8px}
+.proc-desc{font-size:14.5px;color:var(--slate);line-height:1.75}
+.proc-tag-wrap{padding-top:4px}
+.proc-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--fm);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 14px;border-radius:var(--r-pill);border:1px solid var(--border);color:var(--muted);
+  white-space:nowrap;
+}
+.proc-days{
+  font-family:var(--fm);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding-top:8px;white-space:nowrap;
+}
+
+/* ── BEFORE / AFTER ───────────────────────────────────────────── */
+#ba{background:var(--navy);padding:96px 80px}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:var(--r-lg);overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.ba-panel{background:var(--navy);display:flex;flex-direction:column}
+.ba-img{height:380px;overflow:hidden;position:relative}
+.ba-img img{filter:brightness(.75) saturate(.8);transition:filter .4s,transform .5s}
+.ba-panel:hover .ba-img img{filter:brightness(.88) saturate(1);transform:scale(1.02)}
+.ba-info{padding:24px 26px;border-top:1px solid rgba(255,255,255,.07);flex:1}
+.ba-badge{
+  display:inline-block;margin-bottom:12px;
+  font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 14px;border-radius:var(--r-pill);font-weight:700;
+}
+.ba-badge.before{background:rgba(255,255,255,.08);color:rgba(255,255,255,.45)}
+.ba-badge.after{background:var(--coral);color:white}
+.ba-name{font-family:var(--fd);font-size:19px;font-weight:700;color:white;letter-spacing:-0.02em;margin-bottom:5px}
+.ba-detail{font-size:13px;color:rgba(255,255,255,.38);line-height:1.65;margin-bottom:14px}
+.ba-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ba-tag{
+  font-family:var(--fm);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  padding:4px 11px;border-radius:var(--r-pill);border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.45);
+}
+
+/* ── CLIENT GALLERY ───────────────────────────────────────────── */
+#gallery{background:var(--white);border-top:1px solid var(--border)}
+.gal-controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;gap:16px;flex-wrap:wrap}
+.gal-filters{display:flex;gap:8px;flex-wrap:wrap}
+.f-pill{
+  font-family:var(--fm);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 18px;border-radius:var(--r-pill);border:1px solid var(--border);
+  color:var(--slate);background:var(--white);transition:all .15s;cursor:pointer;
+}
+.f-pill:hover{border-color:var(--ink);color:var(--ink)}
+.f-pill.on{background:var(--ink);color:white;border-color:var(--ink)}
+.gal-count{font-family:var(--fm);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gal-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;
+}
+.gc{background:var(--white);display:flex;flex-direction:column;cursor:pointer;transition:background .2s}
+.gc:hover{background:var(--stone)}
+.gc-img{height:180px;position:relative;overflow:hidden;flex-shrink:0}
+.gc-img img{transition:transform .55s ease}
+.gc:hover .gc-img img{transform:scale(1.07)}
+.gc-count{
+  position:absolute;top:10px;right:10px;z-index:2;
+  font-family:var(--fm);font-size:9.5px;letter-spacing:.06em;
+  padding:3px 9px;border-radius:var(--r-pill);background:rgba(0,0,0,.6);color:white;
+  backdrop-filter:blur(6px);
+}
+.gc-overlay{
+  position:absolute;inset:0;background:rgba(0,60,51,.65);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s;
+}
+.gc:hover .gc-overlay{opacity:1}
+.gc-view-btn{
+  display:flex;align-items:center;gap:7px;height:36px;padding:0 18px;
+  border-radius:var(--r-pill);background:white;color:var(--ink);
+  font-size:12px;font-weight:700;white-space:nowrap;
+}
+.gc-body{padding:14px 16px 16px;flex:1}
+.gc-name{font-family:var(--fd);font-size:15px;font-weight:700;letter-spacing:-0.02em;color:var(--ink);margin-bottom:3px}
+.gc-loc{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;margin-bottom:10px}
+.gc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.gc-tag{
+  font-family:var(--fm);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 9px;border-radius:var(--r-pill);
+  border:1px solid var(--coral-soft);color:var(--coral);
+}
+
+/* ── MODAL / CAROUSEL ─────────────────────────────────────────── */
+#modal-bg{
+  position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.9);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+#modal-bg.open{opacity:1;pointer-events:all}
+#modal{
+  width:100%;max-width:1040px;max-height:94vh;display:flex;flex-direction:column;
+  background:var(--ink);border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  transform:scale(.95) translateY(18px);transition:transform .3s cubic-bezier(.25,.1,.25,1);
+}
+#modal-bg.open #modal{transform:none}
+.m-top{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:18px 26px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;
+}
+.m-meta{}
+.m-name{font-family:var(--fd);font-size:20px;font-weight:800;color:white;letter-spacing:-0.025em}
+.m-sub{font-size:12.5px;color:rgba(255,255,255,.38);margin-top:2px}
+.m-close{
+  width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.65);font-size:17px;display:flex;align-items:center;justify-content:center;
+  transition:background .2s;flex-shrink:0;
+}
+.m-close:hover{background:rgba(255,255,255,.16)}
+.car-stage{position:relative;flex:1;overflow:hidden;background:#0b0b0f;min-height:420px}
+.car-track{display:flex;height:100%;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform}
+.car-slide{min-width:100%;height:100%;position:relative;flex-shrink:0}
+.car-slide img{object-fit:contain;background:#0b0b0f}
+.car-cap{
+  position:absolute;bottom:0;left:0;right:0;padding:14px 24px;
+  background:linear-gradient(to top,rgba(0,0,0,.72),transparent);
+  font-size:13px;color:rgba(255,255,255,.7);line-height:1.5;
+}
+.car-btn{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:10;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:white;font-size:20px;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(8px);transition:background .2s,opacity .2s;
+}
+.car-btn:hover{background:rgba(255,255,255,.2)}
+.car-btn:disabled{opacity:.25;cursor:default}
+#car-prev{left:14px}
+#car-next{right:14px}
+.car-foot{
+  display:flex;align-items:center;padding:12px 24px;
+  border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;gap:8px;
+}
+#car-dots{display:flex;gap:5px;align-items:center}
+.car-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .22s}
+.car-dot.on{background:var(--coral);width:18px;border-radius:3px}
+#car-counter{font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.08em;margin-left:auto}
+
+/* ── FAQ ──────────────────────────────────────────────────────── */
+#faq{background:var(--stone);border-top:1px solid var(--border)}
+.faq-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 80px}
+.faq-item{border-bottom:1px solid var(--hairline)}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:20px 0;cursor:pointer;
+}
+.faq-qt{font-size:15.5px;font-weight:600;color:var(--ink);line-height:1.45;transition:color .2s}
+.faq-q:hover .faq-qt{color:var(--green)}
+.faq-ic{
+  width:26px;height:26px;border-radius:50%;border:1px solid var(--hairline);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:18px;line-height:1;flex-shrink:0;
+  transition:all .2s;
+}
+.faq-item.open .faq-ic{background:var(--ink);border-color:var(--ink);color:white;transform:rotate(45deg)}
+.faq-body{max-height:0;overflow:hidden;transition:max-height .38s ease}
+.faq-ans{padding-bottom:18px;font-size:14.5px;color:var(--slate);line-height:1.8}
+.faq-item.open .faq-body{max-height:200px}
+
+/* ── CTA BAND ─────────────────────────────────────────────────── */
+#cta{
+  background:var(--green);padding:96px 80px;text-align:center;position:relative;overflow:hidden;
+}
+#cta::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 110%,rgba(126,232,162,.08) 0%,transparent 60%),
+    radial-gradient(circle 300px at 10% 50%,rgba(0,0,0,.12) 0%,transparent 70%),
+    radial-gradient(circle 300px at 90% 50%,rgba(0,0,0,.12) 0%,transparent 70%);
+}
+.cta-tag{font-family:var(--fm);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px;position:relative}
+.cta-h{font-family:var(--fd);font-size:clamp(38px,5vw,64px);font-weight:800;line-height:1.0;letter-spacing:-0.035em;color:white;margin-bottom:14px;position:relative}
+.cta-p{font-size:17px;color:rgba(255,255,255,.55);max-width:460px;margin:0 auto 40px;line-height:1.75;position:relative}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+.btn-white{
+  height:48px;padding:0 28px;background:white;color:var(--green);
+  border-radius:var(--r-pill);font-size:14px;font-weight:700;
+  display:inline-flex;align-items:center;gap:8px;transition:all .2s;
+}
+.btn-white:hover{background:var(--wash-green);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.btn-ghost{
+  height:48px;padding:0 28px;border:1px solid rgba(255,255,255,.28);color:white;
+  border-radius:var(--r-pill);font-size:14px;font-weight:500;
+  display:inline-flex;align-items:center;gap:8px;transition:all .2s;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.65);background:rgba(255,255,255,.07)}
+.cta-form{
+  display:flex;flex-direction:column;gap:10px;
+  max-width:400px;margin:32px auto 0;position:relative;
+}
+.cta-inp{
+  width:100%;height:50px;padding:0 18px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:var(--r-pill);
+  background:rgba(255,255,255,.09);color:white;
+  font-family:var(--fb);font-size:14px;outline:none;
+  transition:border-color .2s;
+}
+.cta-inp::placeholder{color:rgba(255,255,255,.32)}
+.cta-inp:focus{border-color:rgba(255,255,255,.45)}
+.cta-sub{
+  width:100%;height:50px;padding:0 22px;
+  background:white;color:var(--green);
+  border-radius:var(--r-pill);font-size:16px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.cta-sub:hover{background:var(--wash-green)}
+.cta-note{font-family:var(--fm);font-size:10.5px;letter-spacing:.06em;color:rgba(255,255,255,.27);margin-top:12px;position:relative}
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+footer{background:var(--ink)}
+.ft-nl{
+  padding:52px 80px;border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap;
+}
+.ft-nl-left{max-width:420px}
+.ft-nl-badge{font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:10px}
+.ft-nl-h{font-family:var(--fd);font-size:28px;font-weight:800;color:white;letter-spacing:-0.03em;line-height:1.1;margin-bottom:6px}
+.ft-nl-p{font-size:13px;color:rgba(255,255,255,.38);line-height:1.7}
+.ft-nl-form{display:flex;gap:0;align-self:center}
+.ft-nl-inp{
+  width:260px;height:42px;padding:0 16px;
+  border:1px solid rgba(255,255,255,.12);border-right:none;
+  border-radius:var(--r-sm) 0 0 var(--r-sm);
+  background:rgba(255,255,255,.06);color:white;
+  font-family:var(--fb);font-size:13px;outline:none;
+}
+.ft-nl-inp::placeholder{color:rgba(255,255,255,.28)}
+.ft-nl-btn{
+  height:42px;width:42px;border-radius:0 var(--r-sm) var(--r-sm) 0;
+  background:rgba(255,255,255,.1);color:white;font-size:16px;
+  border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.ft-nl-btn:hover{background:rgba(255,255,255,.18)}
+.ft-cols{
+  padding:48px 80px 40px;display:grid;
+  grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.ft-brand{}
+.ft-brand .n-mark{display:block;font-size:20px;margin-bottom:12px;color:white}
+.ft-brand p{font-size:13px;color:rgba(255,255,255,.33);line-height:1.75;max-width:240px}
+.ft-social{display:flex;gap:8px;margin-top:20px}
+.ft-soc{
+  width:34px;height:34px;border-radius:var(--r-sm);background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:rgba(255,255,255,.45);transition:all .2s;
+}
+.ft-soc:hover{background:var(--coral);border-color:var(--coral);color:white}
+.ft-col h5{
+  font-family:var(--fm);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.45);margin-bottom:18px;
+}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ft-col ul li a{font-size:13px;color:rgba(255,255,255,.38);transition:color .2s}
+.ft-col ul li a:hover{color:white}
+.ft-bottom{
+  padding:18px 80px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.ft-copy{font-size:12px;color:rgba(255,255,255,.22)}
+.ft-legal{display:flex;gap:20px}
+.ft-legal a{font-size:12px;color:rgba(255,255,255,.22);transition:color .2s}
+.ft-legal a:hover{color:rgba(255,255,255,.55)}
+
+/* ── FADE ANIMATIONS ──────────────────────────────────────────── */
+.fi{opacity:0;transform:translateY(22px);transition:opacity .62s ease,transform .62s ease}
+.fi.vis{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}
+.d4{transition-delay:.28s}.d5{transition-delay:.35s}.d6{transition-delay:.42s}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media(max-width:1200px){
+  .sec,.hero,#materials,#ba,#cta,#gallery,#process,#faq{padding-left:48px;padding-right:48px}
+  #nav{padding:0 28px}
+  .trust-strip,.stats-band,.ft-nl,.ft-cols,.ft-bottom{padding-left:48px;padding-right:48px}
+  .proc-row::after{left:-48px;right:-48px}
+  .proc-row{grid-template-columns:60px 1fr 180px}
+  .proc-days{display:none}
+}
+@media(max-width:960px){
+  .hero-media{grid-template-columns:1fr}
+  .hero-side{display:none}
+  .cat-grid,.mat-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-grid{grid-template-columns:repeat(2,1fr)}
+  .ba-grid{grid-template-columns:1fr}
+  .ft-cols{grid-template-columns:1fr 1fr;gap:32px}
+  .stats-band{grid-template-columns:repeat(2,1fr);gap:0}
+  .stat-item:nth-child(2)::before,.stat-item:nth-child(4)::before{display:none}
+  .stat-item{padding:24px;border-bottom:1px solid var(--border)}
+  .faq-cols{grid-template-columns:1fr}
+  .proc-row{grid-template-columns:60px 1fr}
+  .proc-tag-wrap{display:none}
+}
+@media(max-width:768px){
+  :root{--nav-h:60px}
+  .sec,.hero,#materials,#ba,#cta,#gallery,#process,#faq{padding:60px 24px}
+  #nav{padding:0 20px;grid-template-columns:1fr auto}
+  .n-links{display:none}
+  .n-right .n-text-link{display:none}
+  .n-right .n-pill{display:none}
+  .n-burger{display:flex}
+  .trust-strip,.stats-band,.ft-nl,.ft-cols,.ft-bottom{padding-left:24px;padding-right:24px}
+  .trust-row{gap:28px}
+  .trust-divider{display:none}
+  .stats-band{grid-template-columns:1fr 1fr}
+  .hero{padding:60px 24px 48px}
+  .hero-btns{margin-bottom:40px}
+  .cat-grid{grid-template-columns:1fr}
+  .mat-grid{grid-template-columns:repeat(2,1fr)}
+  .ft-cols{grid-template-columns:1fr;padding-bottom:32px}
+  .ft-nl{flex-direction:column;gap:28px}
+  .ft-nl-form{width:100%}
+  .ft-nl-inp{flex:1;width:auto}
+
+  .ft-bottom{flex-direction:column;gap:12px;text-align:center}
+  .proc-row::after{left:-24px;right:-24px}
+  #modal{border-radius:var(--r-md)}
+  .car-stage{min-height:260px}
+}
+@media(max-width:500px){
+  .gal-grid{grid-template-columns:1fr}
+  .mat-grid{grid-template-columns:1fr}
+  .hero-h1{font-size:48px}
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE -->
+<div id="announce">
+  <span>✦ Free 3D design preview — no commitment, no cost.</span>
+  <a href="#cta">Claim yours →</a>
+  <button id="announce-x" onclick="document.getElementById('announce').remove()">✕</button>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="n-logo"><span class="n-mark">KraftKitchen<sup>®</sup></span></div>
+  <nav class="n-links">
+    <a href="#categories">Layouts</a>
+    <a href="#materials">Materials</a>
+    <a href="#process">Process</a>
+    <a href="#gallery">Projects</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <div class="n-right">
+    <a class="n-text-link" href="#gallery">View 500+ Projects</a>
+    <a class="n-pill" href="#cta">Book Free Consultation →</a>
+    <button class="n-burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div id="mobile-menu">
+  <a href="#categories">Layouts</a>
+  <a href="#materials">Materials</a>
+  <a href="#process">Process</a>
+  <a href="#gallery">Projects</a>
+  <a href="#faq">FAQ</a>
+  <a href="#cta">Book Free Consultation →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">World-Class Modular Kitchens</div>
+  <h1 class="hero-h1">
+    <span class="line-break">The kitchen</span>
+    <span class="line-break">you've always</span>
+    <span class="accent">imagined.</span>
+  </h1>
+  <p class="hero-sub">Precision-crafted modular kitchens with European hardware, photorealistic 3D design previews, and seamless 45-day delivery.</p>
+  <div class="hero-btns">
+    <a class="btn-dark" href="#cta">Get Free Design Estimate →</a>
+    <a class="btn-text" href="#gallery">Explore 500+ projects ↓</a>
+  </div>
+  <div class="hero-media fi d1">
+    <!-- Main: grand white island kitchen -->
+    <div class="hero-img-main">
+      <img src="https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=1200&h=880&fit=crop" alt="Premium white modular kitchen" loading="eager">
+    </div>
+    <div class="hero-side">
+      <!-- Side: dark wood kitchen for contrast -->
+      <div class="hero-img-sm">
+        <img src="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=600&h=380&fit=crop" alt="Premium modular kitchen with dark cabinetry" loading="eager">
+      </div>
+      <!-- Live project console -->
+      <div class="hero-console">
+        <div class="con-titlebar">
+          <div class="con-dot" style="background:#ff5f57"></div>
+          <div class="con-dot" style="background:#febc2e"></div>
+          <div class="con-dot" style="background:#28c840"></div>
+          <span class="con-filename">live-projects.log</span>
+        </div>
+        <div class="con-row"><span class="con-chip chip-g">Delivered</span><span class="con-lbl">Sharma — White Acrylic</span><span class="con-val">38 days</span></div>
+        <div class="con-row"><span class="con-chip chip-c">Production</span><span class="con-lbl">Mehta — Island, Black Glass</span><span class="con-val">Day 22</span></div>
+        <div class="con-row"><span class="con-chip chip-b">3D Design</span><span class="con-lbl">Gupta Villa — Champagne</span><span class="con-val">Day 5</span></div>
+        <div class="con-row"><span class="con-chip chip-y">Site Visit</span><span class="con-lbl">Kapoor — Navy + White</span><span class="con-val">Today</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip fi">
+  <div class="trust-lbl">Featured in &amp; trusted by leading developers across India</div>
+  <div class="trust-row">
+    <div class="trust-logo"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>DLF Homes</div>
+    <div class="trust-divider"></div>
+    <div class="trust-logo"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Godrej Properties</div>
+    <div class="trust-divider"></div>
+    <div class="trust-logo"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>L&amp;T Realty</div>
+    <div class="trust-divider"></div>
+    <div class="trust-logo"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Oberoi Realty</div>
+    <div class="trust-divider"></div>
+    <div class="trust-logo"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Lodha Group</div>
+    <div class="trust-divider"></div>
+    <div class="trust-logo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20"/></svg>Prestige Group</div>
+  </div>
+</div>
+
+<!-- STATS BAND -->
+<div class="stats-band fi">
+  <div class="stat-item">
+    <div class="stat-num">500<sub>+</sub></div>
+    <div class="stat-label">Kitchens Delivered</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">12<sub>yr</sub></div>
+    <div class="stat-label">Years of Craft</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">45<sub>day</sub></div>
+    <div class="stat-label">Delivery Guarantee</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">98<sub>%</sub></div>
+    <div class="stat-label">Client Satisfaction</div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="sec" id="categories">
+  <div class="sec-hdr fi">
+    <div class="sec-mono">Kitchen Layouts</div>
+    <h2 class="sec-h">Every layout.<br>Perfectly engineered.</h2>
+    <p class="sec-p">From studio apartments to grand villas — we design, manufacture, and install modular kitchens that fit your exact space and lifestyle.</p>
+  </div>
+  <div class="cat-grid">
+
+    <!-- Island Kitchen: wide image showing island counter with seating -->
+    <div class="cat-card fi d1">
+      <div class="cat-thumb">
+        <img src="https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg?auto=compress&cs=tinysrgb&w=700&h=420&fit=crop" alt="Island kitchen with central island counter">
+      </div>
+      <div class="cat-body">
+        <div class="cat-chips"><span class="c-chip">Island</span><span class="c-chip">Premium</span></div>
+        <div class="cat-title">Island Kitchen</div>
+        <div class="cat-desc">A statement centrepiece with seating overhang, integrated appliance zone, and generous prep area. Ideal for open-plan homes and entertaining families.</div>
+      </div>
+      <div class="cat-foot"><span class="cat-foot-count">24 Projects</span><span class="cat-foot-link">Explore →</span></div>
+    </div>
+
+    <!-- L-Shaped: counters on two perpendicular walls -->
+    <div class="cat-card fi d2">
+      <div class="cat-thumb">
+        <img src="https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=700&h=420&fit=crop" alt="L-shaped kitchen with counters on two walls">
+      </div>
+      <div class="cat-body">
+        <div class="cat-chips"><span class="c-chip">L-Shaped</span><span class="c-chip">Most Popular</span></div>
+        <div class="cat-title">L-Shaped Kitchen</div>
+        <div class="cat-desc">The most versatile layout. Maximises corner space with magic-corner units, creates a natural work triangle, and fits perfectly in 3BHK and 4BHK homes.</div>
+      </div>
+      <div class="cat-foot"><span class="cat-foot-count">180 Projects</span><span class="cat-foot-link">Explore →</span></div>
+    </div>
+
+    <!-- U-Shaped: three-wall enclosed kitchen -->
+    <div class="cat-card fi d3">
+      <div class="cat-thumb">
+        <img src="https://images.pexels.com/photos/2062431/pexels-photo-2062431.jpeg?auto=compress&cs=tinysrgb&w=700&h=420&fit=crop" alt="U-shaped kitchen with cabinetry on three sides">
+      </div>
+      <div class="cat-body">
+        <div class="cat-chips"><span class="c-chip">U-Shaped</span><span class="c-chip">Spacious</span></div>
+        <div class="cat-title">U-Shaped Kitchen</div>
+        <div class="cat-desc">Three walls of cabinetry for maximum storage, countertop, and workspace. The go-to layout for serious home cooks and larger families.</div>
+      </div>
+      <div class="cat-foot"><span class="cat-foot-count">96 Projects</span><span class="cat-foot-link">Explore →</span></div>
+    </div>
+
+    <!-- Parallel/Galley: two parallel counters facing each other -->
+    <div class="cat-card fi d4">
+      <div class="cat-thumb">
+        <img src="https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=700&h=420&fit=crop" alt="Parallel galley kitchen with two facing counters">
+      </div>
+      <div class="cat-body">
+        <div class="cat-chips"><span class="c-chip">Parallel</span><span class="c-chip">Compact Homes</span></div>
+        <div class="cat-title">Parallel / Galley</div>
+        <div class="cat-desc">Two facing countertops create an efficient work corridor in narrow spaces. The smart choice for apartments, builder-floor homes, and compact kitchens.</div>
+      </div>
+      <div class="cat-foot"><span class="cat-foot-count">142 Projects</span><span class="cat-foot-link">Explore →</span></div>
+    </div>
+
+    <!-- Straight: single-wall clean kitchen -->
+    <div class="cat-card fi d5">
+      <div class="cat-thumb">
+        <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=700&h=420&fit=crop" alt="Straight single-wall kitchen for studio apartments">
+      </div>
+      <div class="cat-body">
+        <div class="cat-chips"><span class="c-chip">Straight</span><span class="c-chip">Studio Homes</span></div>
+        <div class="cat-title">Straight Kitchen</div>
+        <div class="cat-desc">A sleek single-wall layout designed for studio and 1RK spaces. Tall column units and intelligent pull-out storage make every centimetre count.</div>
+      </div>
+      <div class="cat-foot"><span class="cat-foot-count">58 Projects</span><span class="cat-foot-link">Explore →</span></div>
+    </div>
+
+    <!-- Open Plan: airy kitchen blending into living space -->
+    <div class="cat-card fi d6">
+      <div class="cat-thumb">
+        <img src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=700&h=420&fit=crop" alt="Open plan kitchen seamlessly merging with living area">
+      </div>
+      <div class="cat-body">
+        <div class="cat-chips"><span class="c-chip">Open Plan</span><span class="c-chip">Entertainer</span></div>
+        <div class="cat-title">Open Kitchen</div>
+        <div class="cat-desc">Flows seamlessly into the living or dining area. Designed for entertaining — with concealed storage that keeps it guest-ready at all times.</div>
+      </div>
+      <div class="cat-foot"><span class="cat-foot-count">72 Projects</span><span class="cat-foot-link">Explore →</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MATERIALS — DEEP GREEN BAND -->
+<section class="sec" id="materials">
+  <div class="sec-hdr on-dark fi">
+    <div class="sec-mono">Finish Library</div>
+    <h2 class="sec-h">Premium materials.<br><span class="em">Sourced globally.</span></h2>
+    <p class="sec-p">Every finish is rigorously tested for moisture resistance, UV stability, and long-term wear before it enters a single KraftKitchen project.</p>
+  </div>
+  <div class="mat-grid fi">
+
+    <!-- Acrylic: super glossy white kitchen doors -->
+    <div class="mat-card">
+      <div class="mat-img"><img src="https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" alt="Acrylic high-gloss white kitchen cabinets"></div>
+      <div class="mat-body">
+        <div class="mat-badge">⭐ Best Seller</div>
+        <div class="mat-name">Acrylic High Gloss</div>
+        <div class="mat-desc">Mirror-like sheen. Scratch-resistant surface. Available in 60+ colours including whites, creams, blacks, and bold tones.</div>
+      </div>
+    </div>
+
+    <!-- PU Matte: smooth, velvety matte kitchen surface -->
+    <div class="mat-card">
+      <div class="mat-img"><img src="https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" alt="PU matte finish kitchen with silky smooth surface"></div>
+      <div class="mat-body">
+        <div class="mat-badge">✦ Luxury</div>
+        <div class="mat-name">PU Matte Finish</div>
+        <div class="mat-desc">Silky, fingerprint-resistant velvet surface. The preferred choice for understated, upscale kitchens that age gracefully.</div>
+      </div>
+    </div>
+
+    <!-- Wood Veneer: warm natural wood grain kitchen -->
+    <div class="mat-card">
+      <div class="mat-img"><img src="https://images.pexels.com/photos/4030761/pexels-photo-4030761.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" alt="Natural wood veneer kitchen with teak grain texture"></div>
+      <div class="mat-body">
+        <div class="mat-badge">🌿 Natural</div>
+        <div class="mat-name">Natural Wood Veneer</div>
+        <div class="mat-desc">Real teak, oak, or walnut grain. Every panel is unique — no two veneer kitchens ever look exactly the same.</div>
+      </div>
+    </div>
+
+    <!-- Membrane: practical clean kitchen -->
+    <div class="mat-card">
+      <div class="mat-img"><img src="https://images.pexels.com/photos/3214064/pexels-photo-3214064.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" alt="Membrane finish kitchen with seamless clean look"></div>
+      <div class="mat-body">
+        <div class="mat-badge">💰 Value</div>
+        <div class="mat-name">Membrane Finish</div>
+        <div class="mat-desc">Seamless PVC wrap over MDF. Moisture-proof, easy to clean, and budget-smart without ever looking cheap.</div>
+      </div>
+    </div>
+
+    <!-- Lacquered Glass: bold dark glossy glass kitchen doors -->
+    <div class="mat-card">
+      <div class="mat-img"><img src="https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" alt="Lacquered glass kitchen shutters with bold dark finish"></div>
+      <div class="mat-body">
+        <div class="mat-badge">🎨 Designer</div>
+        <div class="mat-name">Lacquered Glass</div>
+        <div class="mat-desc">Ultra-modern glass shutters in deep jewel tones. Impact-resistant, easy to wipe clean, and visually striking.</div>
+      </div>
+    </div>
+
+    <!-- PVC Laminate: textured practical kitchen -->
+    <div class="mat-card">
+      <div class="mat-img"><img src="https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" alt="PVC laminate kitchen with durable textured surface"></div>
+      <div class="mat-body">
+        <div class="mat-badge">🔒 Practical</div>
+        <div class="mat-name">PVC Laminate</div>
+        <div class="mat-desc">100% waterproof, termite-proof, available in 200+ textures and woodgrains. The reliable backbone of everyday modular kitchens.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS — RESEARCH TABLE -->
+<section class="sec" id="process">
+  <div class="sec-hdr fi">
+    <div class="sec-mono">How It Works</div>
+    <h2 class="sec-h">Idea to installed<br>in <span class="em">45 days.</span></h2>
+    <p class="sec-p">A transparent, milestone-driven process. You're never left guessing — from the first site visit to final handover.</p>
+  </div>
+  <div class="proc-table fi">
+
+    <div class="proc-row">
+      <div class="proc-num">01</div>
+      <div class="proc-main">
+        <div class="proc-title">Site Visit &amp; Precision Measurement</div>
+        <div class="proc-desc">Our design consultant visits your home, takes laser-precise measurements, and maps your workflow preferences, appliance positions, and storage needs. This single visit drives every downstream decision — nothing is guessed.</div>
+      </div>
+      <div class="proc-tag-wrap"><span class="proc-tag">📐 In-home visit</span></div>
+      <div class="proc-days">Day 1–3</div>
+    </div>
+
+    <div class="proc-row">
+      <div class="proc-num">02</div>
+      <div class="proc-main">
+        <div class="proc-title">Photorealistic 3D Design</div>
+        <div class="proc-desc">Within 5 working days, you receive a photorealistic 3D render of your proposed kitchen — exact finishes, cabinet heights, hardware, and lighting — all visible before a single nail is driven. Unlimited revisions included until you love it completely.</div>
+      </div>
+      <div class="proc-tag-wrap"><span class="proc-tag">🎨 3D Render</span></div>
+      <div class="proc-days">Day 4–8</div>
+    </div>
+
+    <div class="proc-row">
+      <div class="proc-num">03</div>
+      <div class="proc-main">
+        <div class="proc-title">Material Selection &amp; Quote Lock</div>
+        <div class="proc-desc">Select your finish, countertop material, hardware brand, and appliance integration. We provide a fully itemised quote — zero hidden charges. Once you approve, your project enters our production queue within 24 hours, no waiting.</div>
+      </div>
+      <div class="proc-tag-wrap"><span class="proc-tag">✅ Fixed-price quote</span></div>
+      <div class="proc-days">Day 8–12</div>
+    </div>
+
+    <div class="proc-row">
+      <div class="proc-num">04</div>
+      <div class="proc-main">
+        <div class="proc-title">In-House CNC Factory Production</div>
+        <div class="proc-desc">Every cabinet, shutter, and drawer unit is cut and assembled in our own CNC-equipped factory in Delhi — never outsourced. A dedicated quality inspector signs off each component before dispatch. You receive photo updates at every milestone.</div>
+      </div>
+      <div class="proc-tag-wrap"><span class="proc-tag">🏭 CNC factory</span></div>
+      <div class="proc-days">Day 12–35</div>
+    </div>
+
+    <div class="proc-row">
+      <div class="proc-num">05</div>
+      <div class="proc-main">
+        <div class="proc-title">White-Glove Installation &amp; Handover</div>
+        <div class="proc-desc">Our in-house installation team — not third-party contractors — fits your kitchen with surgical precision. A full walkthrough ensures every drawer glides silently, every hinge is perfectly aligned, and every surface is spotless. Then we hand you the keys.</div>
+      </div>
+      <div class="proc-tag-wrap"><span class="proc-tag">🔧 White-glove</span></div>
+      <div class="proc-days">Day 36–45</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BEFORE / AFTER — NAVY -->
+<section class="sec" id="ba">
+  <div class="sec-hdr on-dark fi" style="max-width:600px">
+    <div class="sec-mono">Transformation Gallery</div>
+    <h2 class="sec-h">The KraftKitchen<br><span class="em">difference.</span></h2>
+    <p class="sec-p">Real homes. Verified transformations. See what we start with — and the world-class kitchen we leave behind.</p>
+  </div>
+  <div class="ba-grid fi">
+    <!-- BEFORE: old, dated, tiled open kitchen -->
+    <div class="ba-panel">
+      <div class="ba-img">
+        <img src="https://images.pexels.com/photos/279648/pexels-photo-279648.jpeg?auto=compress&cs=tinysrgb&w=900&h=600&fit=crop" alt="Before: old dated kitchen with tiled open shelves and no modular storage">
+      </div>
+      <div class="ba-info">
+        <div class="ba-badge before">Before</div>
+        <div class="ba-name">Sharma Residence — Sector 56, Gurgaon</div>
+        <div class="ba-detail">Open tiled shelves · Inadequate ventilation · No defined work zones · Wasted corner space · Zero organised storage</div>
+        <div class="ba-tags">
+          <span class="ba-tag">Outdated Layout</span>
+          <span class="ba-tag">Wasted Space</span>
+          <span class="ba-tag">No Modular Units</span>
+          <span class="ba-tag">Poor Ergonomics</span>
+        </div>
+      </div>
+    </div>
+    <!-- AFTER: bright modern white modular kitchen — same home -->
+    <div class="ba-panel">
+      <div class="ba-img">
+        <img src="https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=900&h=600&fit=crop" alt="After: bright white modular kitchen with Hettich hardware and quartz countertop">
+      </div>
+      <div class="ba-info">
+        <div class="ba-badge after">After — Delivered in 38 Days</div>
+        <div class="ba-name">Sharma Residence — Completed March 2024</div>
+        <div class="ba-detail">Parallel modular layout · Hettich soft-close hardware throughout · Carrara quartz countertop · Integrated chimney niche · LED under-cabinet lighting</div>
+        <div class="ba-tags">
+          <span class="ba-tag">White Acrylic Gloss</span>
+          <span class="ba-tag">+40% Storage</span>
+          <span class="ba-tag">Full Modular</span>
+          <span class="ba-tag">₹4.2L Total</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENT GALLERY -->
+<section class="sec" id="gallery">
+  <div class="sec-hdr fi">
+    <div class="sec-mono">Client Portfolio</div>
+    <h2 class="sec-h">500+ projects.<br>Zero compromises.</h2>
+    <p class="sec-p">Click any project card to open the complete photo walkthrough for that kitchen — every finish, every detail.</p>
+  </div>
+  <div class="gal-controls fi">
+    <div class="gal-filters">
+      <button class="f-pill on" data-f="all">All Projects</button>
+      <button class="f-pill" data-f="island">Island</button>
+      <button class="f-pill" data-f="l-shaped">L-Shaped</button>
+      <button class="f-pill" data-f="u-shaped">U-Shaped</button>
+      <button class="f-pill" data-f="parallel">Parallel</button>
+    </div>
+    <div class="gal-count" id="galCount">8 PROJECTS</div>
+  </div>
+  <div class="gal-grid" id="galGrid"></div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-hdr fi">
+    <div class="sec-mono">Common Questions</div>
+    <h2 class="sec-h">Everything you<br>want to know.</h2>
+  </div>
+  <div class="faq-cols fi">
+    <div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">How long does a modular kitchen take from start to handover?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">From design approval to final handover, our standard timeline is 38–45 days — covering 3D design (5 days), production (20–25 days), and installation (5–7 days). Rush delivery is available, with turnarounds as fast as 28 days for a premium.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">What does a modular kitchen typically cost?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">A standard 10–12 ft L-shaped kitchen starts at ₹1.8L with membrane finish and basic hardware. Premium acrylic or PU finishes with Hettich or Blum hardware range from ₹3.5L–₹7L. We provide a fully itemised quote with zero hidden charges before any commitment.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">What warranty comes with a KraftKitchen?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">10-year structural warranty on all cabinets and carcasses. 5-year warranty on hardware (hinges, drawer channels, lift systems). After-sales service within 48 hours in Delhi NCR and 72 hours in Mumbai. We stand behind everything we build.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">Can you retrofit an existing or rental kitchen?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">Absolutely. We specialise in both full installations and retrofit solutions. For rental properties we offer semi-permanent modular systems designed to be relocated when you move. We also handle partial upgrades — countertop replacement, new shutters, or hardware swaps.</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">Is production in-house or outsourced to vendors?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">100% in-house. Every cabinet is manufactured at our CNC-equipped factory in Delhi — we never outsource to third parties. This means we control quality at every single stage, from raw board to finished unit. No surprises, no quality shortcuts.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">Which hardware brands do you use?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">We are authorised dealers for Hettich, Häfele, and Blum — three of Europe's most respected kitchen hardware brands. All drawer systems, hinges, and lift mechanisms carry manufacturer guarantees. We also offer Ebco for value-conscious projects without compromising durability.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">Do I see the 3D design before making any payment?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">Yes — always. We provide a free photorealistic 3D render before any payment is required. You'll see your exact kitchen — with your chosen finish, layout, lighting, and handles — before a single unit goes into production. Unlimited revisions included.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-qt">Which cities do you currently serve?</span><button class="faq-ic">+</button></div>
+        <div class="faq-body"><p class="faq-ans">Full service across Delhi, Gurgaon, Noida, Faridabad, and Ghaziabad (complete Delhi NCR) and Mumbai, Thane, and Navi Mumbai. Expanding to Pune and Bengaluru soon. Large residential developments outside these zones can be accommodated on request.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="sec" id="cta">
+  <div class="cta-tag fi">Start Your Kitchen Journey</div>
+  <h2 class="cta-h fi">Your dream kitchen<br>is 45 days away.</h2>
+  <p class="cta-p fi">Free 3D design preview. No commitment required. Just a great kitchen conversation with people who genuinely love the craft.</p>
+  <div class="cta-btns fi">
+    <a class="btn-white" href="tel:+919876543210">📞 Call: +91 98765 43210</a>
+    <a class="btn-ghost" href="https://wa.me/919876543210" target="_blank">💬 WhatsApp Us</a>
+  </div>
+  <form class="cta-form fi" id="ctaForm">
+    <input class="cta-inp" type="text" placeholder="Your Name" required>
+    <input class="cta-inp" type="tel" placeholder="Phone Number" required>
+    <button class="cta-sub" type="submit">→</button>
+  </form>
+  <p class="cta-note fi">We call back within 2 hours on working days. No spam, ever.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-nl">
+    <div class="ft-nl-left">
+      <div class="ft-nl-badge">Kitchen moves fast.</div>
+      <div class="ft-nl-h">Stay ahead of<br>design trends.</div>
+      <p class="ft-nl-p">Monthly kitchen design insights, new finish arrivals, and real project case studies. No fluff — just things worth knowing.</p>
+    </div>
+    <form class="ft-nl-form" onsubmit="return false">
+      <input class="ft-nl-inp" type="email" placeholder="your@email.com">
+      <button class="ft-nl-btn" type="submit">→</button>
+    </form>
+  </div>
+  <div class="ft-cols">
+    <div class="ft-brand">
+      <span class="n-mark">KraftKitchen<sup style="color:var(--coral);font-size:9px">®</sup></span>
+      <p>World-class modular kitchens designed with precision, built in our own factory, and installed by our own team. Serving India since 2012.</p>
+      <div class="ft-social">
+        <a class="ft-soc" href="#" aria-label="Instagram">📸</a>
+        <a class="ft-soc" href="#" aria-label="Facebook">👥</a>
+        <a class="ft-soc" href="#" aria-label="WhatsApp">💬</a>
+        <a class="ft-soc" href="#" aria-label="YouTube">▶</a>
+        <a class="ft-soc" href="#" aria-label="Houzz">🏠</a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h5>Kitchens</h5>
+      <ul>
+        <li><a href="#">Island Kitchens</a></li>
+        <li><a href="#">L-Shaped Kitchens</a></li>
+        <li><a href="#">U-Shaped Kitchens</a></li>
+        <li><a href="#">Parallel Kitchens</a></li>
+        <li><a href="#">Straight Kitchens</a></li>
+        <li><a href="#">Open Kitchen</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Factory</a></li>
+        <li><a href="#">Design Process</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Design Blog</a></li>
+        <li><a href="#">Press &amp; Media</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+        <li><a href="mailto:hello@kraftkitchen.in">hello@kraftkitchen.in</a></li>
+        <li><a href="#">Delhi NCR Showroom</a></li>
+        <li><a href="#">Mumbai Showroom</a></li>
+        <li><a href="#">WhatsApp Chat</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span class="ft-copy">© <span id="cy">2025</span> KraftKitchen Studio Pvt. Ltd. All rights reserved. Photography via Pexels.</span>
+    <div class="ft-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div id="modal-bg">
+  <div id="modal">
+    <div class="m-top">
+      <div class="m-meta">
+        <div class="m-name" id="m-name">—</div>
+        <div class="m-sub" id="m-sub">—</div>
+      </div>
+      <button class="m-close" id="m-close">✕</button>
+    </div>
+    <div class="car-stage">
+      <div class="car-track" id="car-track"></div>
+      <button class="car-btn" id="car-prev">‹</button>
+      <button class="car-btn" id="car-next">›</button>
+    </div>
+    <div class="car-foot">
+      <div id="car-dots"></div>
+      <span id="car-counter">1 / 1</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  PROJECT DATA — images matched to project type & finish
+// ═══════════════════════════════════════════════════════════
+const PROJECTS = [
+  {
+    id:1, name:'Sharma Residence', loc:'DLF Phase 3, Gurgaon', year:'2024',
+    type:'4BHK Villa · Parallel Kitchen', finish:'White Acrylic High Gloss', filter:'parallel',
+    tags:['Acrylic Gloss','Hettich','Quartz Countertop'],
+    // Cover: clean white modern kitchen matching the finish description
+    cover:'https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Full kitchen overview — white acrylic high-gloss finish throughout' },
+      { src:'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Upper cabinets with integrated LED strip and recessed downlights' },
+      { src:'https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Carrara quartz countertop — square-edge profile, 20mm thick' },
+      { src:'https://images.pexels.com/photos/3214064/pexels-photo-3214064.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Chimney niche detail with full-height cabinetry surround' },
+      { src:'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Parallel layout viewed from the entrance — total length 14ft' },
+    ]
+  },
+  {
+    id:2, name:'Patel Family Home', loc:'Satellite, Ahmedabad', year:'2024',
+    type:'3BHK · L-Shaped Kitchen', finish:'Teak Wood Veneer + Matte Grey', filter:'l-shaped',
+    tags:['Teak Veneer','Blum Tandem','Granite Top'],
+    // Cover: warm wood kitchen matching teak veneer description
+    cover:'https://images.pexels.com/photos/4030761/pexels-photo-4030761.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/4030761/pexels-photo-4030761.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'L-shaped kitchen — teak veneer lower units, matte grey upper cabinets' },
+      { src:'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Close-up of teak veneer grain — real wood, not laminate' },
+      { src:'https://images.pexels.com/photos/2062431/pexels-photo-2062431.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Corner unit with Häfele magic corner pull-out system' },
+      { src:'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Blum Tandem deep drawer with cutlery divider tray insert' },
+    ]
+  },
+  {
+    id:3, name:'Mehta Penthouse', loc:'Worli Sea Face, Mumbai', year:'2023',
+    type:'Penthouse · Island Kitchen', finish:'Black Lacquered Glass', filter:'island',
+    tags:['Lacquered Glass','SS Counter','Häfele Senso'],
+    // Cover: dark sophisticated kitchen matching black glass description
+    cover:'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Black lacquered glass island kitchen — viewed from the living area' },
+      { src:'https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Island counter with 3m marble waterfall top and barstool overhang' },
+      { src:'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Island detail — integrated cooktop with downdraft extractor' },
+      { src:'https://images.pexels.com/photos/2062431/pexels-photo-2062431.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Full-height pantry column — Häfele Senso pull-out systems' },
+      { src:'https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Appliance garage and integrated coffee station' },
+    ]
+  },
+  {
+    id:4, name:'Singh Residence', loc:'Sector 137, Noida', year:'2023',
+    type:'3BHK Flat · U-Shaped Kitchen', finish:'PU Matte Cream', filter:'u-shaped',
+    tags:['PU Matte','Hettich Quadro','Quartz'],
+    // Cover: clean cream/neutral kitchen matching PU matte description
+    cover:'https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'U-shaped layout — cream PU matte finish, maximum work triangle' },
+      { src:'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Upper cabinets in matte finish — fingerprint-free all day' },
+      { src:'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Integrated sink zone with under-cabinet LED strip' },
+      { src:'https://images.pexels.com/photos/3214064/pexels-photo-3214064.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Hettich Quadro drawer — whisper-quiet soft close action' },
+      { src:'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Corner detail — rotating carousel with Häfele fittings' },
+    ]
+  },
+  {
+    id:5, name:'Joshi Studio', loc:'Andheri West, Mumbai', year:'2024',
+    type:'1RK Studio · Straight Kitchen', finish:'Sage Green Membrane', filter:'parallel',
+    tags:['Membrane Finish','Space-Smart','Modular'],
+    // Cover: clean contemporary kitchen suggesting compact/functional design
+    cover:'https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/3935333/pexels-photo-3935333.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Straight kitchen in sage green membrane — full length 8ft' },
+      { src:'https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Full-height overhead cabinets — every vertical inch used' },
+      { src:'https://images.pexels.com/photos/4030761/pexels-photo-4030761.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Under-counter 200mm pull-out pantry with 8 tiers' },
+      { src:'https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Single-bowl undermount sink with pull-out mixer tap' },
+    ]
+  },
+  {
+    id:6, name:'Gupta Villa', loc:'Vasant Kunj, New Delhi', year:'2022',
+    type:'5BHK Villa · Island + Parallel', finish:'Champagne Acrylic + Walnut Veneer', filter:'island',
+    tags:['Champagne Acrylic','Blum Aventos','Marble Top'],
+    // Cover: elegant island kitchen matching premium/champagne description
+    cover:'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Grand chef\'s kitchen — island + parallel layout, 22ft total run' },
+      { src:'https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'3m waterfall marble island — Blum Aventos lift systems for upper units' },
+      { src:'https://images.pexels.com/photos/2062431/pexels-photo-2062431.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Integrated Siemens iQ700 appliance column — fridge, oven, microwave' },
+      { src:'https://images.pexels.com/photos/2724748/pexels-photo-2724748.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Champagne acrylic upper cabinets — recessed J-pull handles' },
+      { src:'https://images.pexels.com/photos/4030761/pexels-photo-4030761.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Walnut veneer lower units — natural grain contrast combination' },
+    ]
+  },
+  {
+    id:7, name:'Kapoor Home', loc:'Powai, Mumbai', year:'2024',
+    type:'2BHK · L-Shaped Kitchen', finish:'Navy Blue PU + White Acrylic', filter:'l-shaped',
+    tags:['Two-Tone PU','Brass Handles','Hettich'],
+    // Cover: white and modern kitchen suggesting two-tone look
+    cover:'https://images.pexels.com/photos/3214064/pexels-photo-3214064.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/3214064/pexels-photo-3214064.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Two-tone L-shaped kitchen — navy lower, white acrylic upper cabinets' },
+      { src:'https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Solid brass D-pull handles — warm against the navy blue surface' },
+      { src:'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'White quartz countertop with subtle veining — pencil edge profile' },
+      { src:'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Open floating shelf with solid brass brackets above the cooktop' },
+    ]
+  },
+  {
+    id:8, name:'Reddy Modern Home', loc:'Jubilee Hills, Hyderabad', year:'2023',
+    type:'4BHK · U-Shaped Kitchen', finish:'Terracotta + Cream Two-Tone', filter:'u-shaped',
+    tags:['Warm Palette','Membrane Finish','Häfele'],
+    // Cover: warm-toned kitchen matching terracotta + cream description
+    cover:'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    photos:[
+      { src:'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Terracotta lower + cream upper cabinets — earthy modern palette' },
+      { src:'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Exposed stone tile backsplash with cream cabinet surround' },
+      { src:'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'4-bin integrated waste management centre under sink zone' },
+      { src:'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Pull-out wire basket pantry — Häfele stainless steel baskets' },
+      { src:'https://images.pexels.com/photos/1599791/pexels-photo-1599791.jpeg?auto=compress&cs=tinysrgb&w=1200',
+        cap:'Corner unit with rotating carousel — full 360° access' },
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+//  GALLERY RENDER
+// ═══════════════════════════════════════════════════════════
+function renderGallery(f='all'){
+  const list = f==='all' ? PROJECTS : PROJECTS.filter(p=>p.filter===f);
+  document.getElementById('galCount').textContent = list.length + ' PROJECT' + (list.length!==1?'S':'');
+  document.getElementById('galGrid').innerHTML = list.map(p=>`
+    <div class="gc fi" onclick="openModal(${p.id})">
+      <div class="gc-img">
+        <img src="${p.cover}" alt="${p.name} — ${p.finish}" loading="lazy">
+        <div class="gc-count">${p.photos.length} photos</div>
+        <div class="gc-overlay"><div class="gc-view-btn">↗ View Project</div></div>
+      </div>
+      <div class="gc-body">
+        <div class="gc-name">${p.name}</div>
+        <div class="gc-loc">📍 ${p.loc} &nbsp;·&nbsp; ${p.year}</div>
+        <div class="gc-tags">${p.tags.map(t=>`<span class="gc-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+  observe();
+}
+
+// filter pills
+document.querySelectorAll('.f-pill').forEach(b=>{
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.f-pill').forEach(x=>x.classList.remove('on'));
+    this.classList.add('on');
+    renderGallery(this.dataset.f);
+  });
+});
+
+// ═══════════════════════════════════════════════════════════
+//  MODAL CAROUSEL
+// ═══════════════════════════════════════════════════════════
+let ci=0, cp=[];
+
+function openModal(id){
+  const p = PROJECTS.find(x=>x.id===id);
+  if(!p) return;
+  cp = p.photos; ci = 0;
+  document.getElementById('m-name').textContent = p.name;
+  document.getElementById('m-sub').textContent  = p.loc + '  ·  ' + p.type + '  ·  ' + p.finish;
+  document.getElementById('car-track').innerHTML = cp.map((ph,i)=>`
+    <div class="car-slide">
+      <img src="${ph.src}" alt="Photo ${i+1}: ${ph.cap}" loading="${i===0?'eager':'lazy'}">
+      <div class="car-cap">${ph.cap}</div>
+    </div>`).join('');
+  document.getElementById('car-dots').innerHTML = cp.map((_,i)=>`
+    <div class="car-dot${i===0?' on':''}" onclick="goTo(${i})"></div>`).join('');
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  syncCar();
+}
+
+function syncCar(){
+  document.getElementById('car-track').style.transform = `translateX(-${ci*100}%)`;
+  document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('on',i===ci));
+  document.getElementById('car-counter').textContent = `${ci+1} / ${cp.length}`;
+  document.getElementById('car-prev').disabled = ci===0;
+  document.getElementById('car-next').disabled = ci===cp.length-1;
+}
+
+function goTo(i){ ci = Math.max(0,Math.min(i,cp.length-1)); syncCar(); }
+
+document.getElementById('car-prev').onclick = ()=>goTo(ci-1);
+document.getElementById('car-next').onclick = ()=>goTo(ci+1);
+
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('m-close').onclick   = closeModal;
+document.getElementById('modal-bg').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
+
+// keyboard
+document.addEventListener('keydown', e=>{
+  if(!document.getElementById('modal-bg').classList.contains('open')) return;
+  if(e.key==='ArrowRight') goTo(ci+1);
+  if(e.key==='ArrowLeft')  goTo(ci-1);
+  if(e.key==='Escape')     closeModal();
+});
+
+// touch swipe
+let ts=0;
+document.getElementById('car-track').addEventListener('touchstart', e=>{ts=e.touches[0].clientX;},{passive:true});
+document.getElementById('car-track').addEventListener('touchend',   e=>{
+  const d=ts-e.changedTouches[0].clientX;
+  if(Math.abs(d)>48) goTo(ci+(d>0?1:-1));
+});
+
+// ═══════════════════════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════════════════════
+const nav   = document.getElementById('nav');
+const burger= document.getElementById('burger');
+const mMenu = document.getElementById('mobile-menu');
+
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled', scrollY>36));
+
+burger.addEventListener('click',()=>{
+  burger.classList.toggle('open');
+  mMenu.classList.toggle('open');
+});
+mMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  mMenu.classList.remove('open');
+  burger.classList.remove('open');
+}));
+
+// ═══════════════════════════════════════════════════════════
+//  FAQ
+// ═══════════════════════════════════════════════════════════
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',function(){
+    const item=this.parentElement;
+    const was=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+    if(!was) item.classList.add('open');
+  });
+});
+
+// ═══════════════════════════════════════════════════════════
+//  CTA FORM
+// ═══════════════════════════════════════════════════════════
+document.getElementById('ctaForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const btn = this.querySelector('.cta-sub');
+  const inputs = this.querySelectorAll('.cta-inp');
+  btn.textContent='✓';
+  btn.style.cssText='background:#7ee8a2;color:var(--green)';
+  inputs.forEach(i=>i.value='');
+  setTimeout(()=>{ btn.textContent='→'; btn.style.cssText=''; }, 3500);
+});
+
+// ═══════════════════════════════════════════════════════════
+//  INTERSECTION OBSERVER FADE-INS
+// ═══════════════════════════════════════════════════════════
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); } });
+},{threshold:0.09});
+
+function observe(){
+  document.querySelectorAll('.fi:not(.vis)').forEach(el=>io.observe(el));
+}
+
+// dynamic year
+document.getElementById('cy').textContent = new Date().getFullYear();
+
+// init
+renderGallery();
+observe();
+</script>
+</body>
+</html>
